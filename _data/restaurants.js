@@ -2,7 +2,7 @@ const parseCSV = require('../_includes/csvParser');
 const path = require('path');
 
 module.exports = function() {
-  const csvPath = path.join(__dirname, '..', 'HEC Experience India Dataset - restaurants.csv');
+  const csvPath = path.resolve(process.cwd(), 'HEC Experience India Dataset - restaurants.csv');
   const data = parseCSV(csvPath);
   
   return data.map(row => ({
