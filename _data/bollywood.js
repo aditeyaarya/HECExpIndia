@@ -1,16 +1,15 @@
-const parseCSV = require('./csvParser');
+const parseCSV = require('../_includes/csvParser');
 const path = require('path');
 
 module.exports = function() {
   const csvPath = path.join(__dirname, '..', 'HEC Experience India Dataset - bollywood.csv');
   const data = parseCSV(csvPath);
   
-  // Transform CSV data to match template structure
   return data.map(row => ({
-    title: row.title || row.Title || '',
-    desc: row.description || row.Description || row.desc || '',
-    image: row.image || row.Image || '',
-    link: row.link || row.Link || '',
-    meta: row.meta ? [['Info', row.meta]] : []
+    title: row.Title || '',
+    desc: row.Description || '',
+    image: row.Poster_URL || '',
+    link: row.TMDB_ID ? `https://www.themoviedb.org/movie/${row.TMDB_ID}` : '',
+    meta: row.Genre ? [['Genre', row.Genre]] : []
   }));
 };

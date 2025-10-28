@@ -17,20 +17,14 @@ module.exports = function() {
   const aboutRow = data[0];
   const meta = [];
   
-  if (aboutRow.email || aboutRow.Email) {
-    meta.push(['Email', aboutRow.email || aboutRow.Email]);
-  }
-  if (aboutRow.phone || aboutRow.Phone) {
-    meta.push(['Phone', aboutRow.phone || aboutRow.Phone]);
-  }
-  if (aboutRow.location || aboutRow.Location || aboutRow.city || aboutRow.City) {
-    meta.push(['Location', aboutRow.location || aboutRow.Location || aboutRow.city || aboutRow.City]);
+  if (aboutRow.Email) {
+    meta.push(['Email', aboutRow.Email]);
   }
   
   return {
-    title: aboutRow.title || aboutRow.Title || 'About Us',
-    desc: aboutRow.description || aboutRow.Description || aboutRow.desc || '',
+    title: aboutRow.Name || 'About Us',
+    desc: aboutRow.Bio || '',
     meta: meta,
-    experience: aboutRow.experience || aboutRow.Experience || ''
+    experience: aboutRow.Bio || ''
   };
 };
