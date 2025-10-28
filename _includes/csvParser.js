@@ -8,12 +8,14 @@ function parseCSV(filePath) {
     
     if (lines.length < 2) return [];
     
-    const headers = lines[0].split(',').map(h => h.trim());
+    // Parse header
+    const headers = parseCSVLine(lines[0]);
     const data = [];
     
+    // Parse data rows
     for (let i = 1; i < lines.length; i++) {
-      // Simple CSV parsing (handles basic cases)
-      const row = lines[i].split(',').map(cell => cell.trim());
+      if (!lines[i].trim()) continue;
+      const row = parseCSVLine(lines[i]);
       const obj = {};
       
       headers.forEach((header, index) => {
@@ -28,6 +30,35 @@ function parseCSV(filePath) {
     console.error(`Error parsing CSV: ${filePath}`, error);
     return [];
   }
+}
+
+// Helper function to parse CSV line with quoted field support
+function parseCSVLine(line) {
+  const result = [];
+  let current = '';
+  let insideQuotes = false;
+  
+  for (let i = 0; i < line.length; i++) {
+    const char = line[i];
+    const nextChar = line[i + 1];
+    
+    if (char === '"') {
+      if (insideQuotes && nextChar === '"') {
+        current += '"';
+        i++; // Skip next quote
+      } else {
+        insideQuotes = !insideQuotes;
+      }
+    } else if (char === ',' && !insideQuotes) {
+      result.push(current.trim());
+      current = '';
+    } else {
+      current += char;
+    }
+  }
+  
+  result.push(current.trim());
+  return result;
 }
 
 module.exports = parseCSV;
