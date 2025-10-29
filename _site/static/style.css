@@ -1204,3 +1204,37 @@ html.fullpage-active body {
 }
 
 /* Keep your existing sections’ styling (colors, grids) intact */
+/* Make background layers stay behind everything */
+.particles-bg,
+.hero-gradient,
+.hero-pattern,
+.floating-shapes {
+  position: fixed;         /* or absolute if that's what you use */
+  inset: 0 auto auto 0;    /* safe default */
+  z-index: 0 !important;   /* keep them at the back */
+}
+
+/* Ensure main sections sit above backgrounds */
+.hero-section,
+.content-section,
+.about-section {
+  position: relative;
+  z-index: 1;
+}
+
+/* Make sure the footer is on top and visible */
+.footer {
+  position: relative;
+  z-index: 2;
+  display: block;          /* guard against accidental overrides */
+  background: rgba(20, 20, 30, 0.7); /* tweak if needed for contrast */
+  backdrop-filter: saturate(120%) blur(8px);
+  padding-top: 40px;
+  border-top: 1px solid rgba(255,255,255,0.08);
+}
+
+/* If your navbar is fixed and overlaps, keep its z-index above sections */
+.glass-nav { z-index: 10; }
+
+/* Optional: prevent any parent from clipping the footer */
+body, html { overflow-x: hidden; }
