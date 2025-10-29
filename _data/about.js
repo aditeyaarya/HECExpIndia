@@ -1,24 +1,29 @@
-const parseCSV = require('../_includes/csvParser'); // or adjust to actual location
+const parseCSV = require('../_includes/csvParser');
 const path = require('path');
 const fs = require('fs');
 
 module.exports = function () {
   try {
-    const csvPath = path.resolve(process.cwd(), 'about_me.csv'); // changed
-    const data = parseCSV(csvPath);
-    if (!data.length) return { title: 'About Us', desc: '', meta: [], experience: '' };
+    const csvPath = path.resolve(process.cwd(), 'data/about_me.csv');
+    console.log('[about.js] CSV:', csvPath, 'exists:', fs.existsSync(csvPath));
 
-    const aboutRow = data[0];
+    const data = parseCSV(csvPath);
+    if (!data.length) {
+      return { title: 'About', desc: '', meta: [], experience: '' };
+    }
+
+    const row = data[0];
     const meta = [];
-    if (aboutRow.Email) meta.push(['Email', aboutRow.Email]);
+    if (row.Email) meta.push(['Email', row.Email]);
 
     return {
-      title: aboutRow.Name || 'About Us',
-      desc: aboutRow.Bio || '',
+      title: row.Name || 'About',
+      desc: row.Bio || '',
       meta,
-      experience: aboutRow.Bio || ''
+      experience: row.Bio || ''
     };
   } catch (e) {
-    return { title: 'About Us', desc: '', meta: [], experience: '' };
+    console.error('[about.js] Error:', e.message);
+    return { title: 'About', desc: '', meta: [], experience: '' };
   }
 };

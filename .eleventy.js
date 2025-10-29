@@ -1,21 +1,19 @@
 module.exports = function (eleventyConfig) {
-  // Copy all static assets (images, CSS, JS, etc.)
-  eleventyConfig.addPassthroughCopy({ "static": "static" });
-
-  // Copy all data files (CSV, JSON, etc.) into the build output
-  // This includes: about_me.csv, bollywood.csv, events.csv, news.csv,
-  // recipes.csv, resources.csv, restaurants.csv
+  // Copy static assets and data folder to the output
+  eleventyConfig.addPassthroughCopy("static");
   eleventyConfig.addPassthroughCopy("data");
 
-  // Return Eleventy configuration
   return {
     dir: {
-      input: ".",       // your templates and data live in the project root
-      output: "_site"   // Eleventy builds here
+      // IMPORTANT: look for templates and _data at the project root
+      input: ".",
+      includes: "_includes",
+      data: "_data",
+      output: "_site",
     },
     markdownTemplateEngine: "njk",
     htmlTemplateEngine: "njk",
     dataTemplateEngine: "njk",
-    templateFormats: ["njk", "html", "md"]
+    templateFormats: ["njk", "html", "md"],
   };
 };

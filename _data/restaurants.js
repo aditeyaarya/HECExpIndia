@@ -1,9 +1,12 @@
 const parseCSV = require('../_includes/csvParser');
 const path = require('path');
+const fs = require('fs');
 
 module.exports = function () {
   try {
-    const csvPath = path.resolve(process.cwd(), 'restaurants.csv'); // changed
+    const csvPath = path.resolve(process.cwd(), 'data/restaurants.csv');
+    console.log('[restaurants.js] CSV:', csvPath, 'exists:', fs.existsSync(csvPath));
+
     const data = parseCSV(csvPath);
     return data.map(row => ({
       title: row.Name || '',
@@ -12,5 +15,8 @@ module.exports = function () {
       link: row.Google_Maps_URL || '',
       meta: [['Rating', row.Rating || 'N/A']]
     }));
-  } catch { return []; }
+  } catch (e) {
+    console.error('[restaurants.js] Error:', e.message);
+    return [];
+  }
 };
