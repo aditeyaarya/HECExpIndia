@@ -2,19 +2,25 @@ import os
 import csv
 from flask import Flask, render_template
 
-app = Flask(__name__, static_folder="static", template_folder="templates")
+# Folder structure based on your repo:
+# data/ → contains CSVs
+# templates/ → HTML templates
+# static/ → CSS, JS, images
+ROOT_DIR = os.path.abspath(os.path.dirname(__file__))
+CSV_DIR = os.path.join(ROOT_DIR, "data")   # ✅ <-- Corrected
+TEMPLATES_DIR = os.path.join(ROOT_DIR, "templates")
+STATIC_DIR = os.path.join(ROOT_DIR, "static")
 
-# Use the current folder (your V2 folder) for CSVs
-CSV_DIR = os.path.abspath(os.path.dirname(__file__))
+app = Flask(__name__, static_folder=STATIC_DIR, template_folder=TEMPLATES_DIR)
 
 FILES = {
-    "about": "HEC Experience India Dataset - about me.csv",
-    "news": "HEC Experience India Dataset - news.csv",
-    "bollywood": "HEC Experience India Dataset - bollywood.csv",
-    "restaurants": "HEC Experience India Dataset - restaurants.csv",
-    "recipes": "HEC Experience India Dataset - recipes.csv",
-    "events": "HEC Experience India Dataset - events.csv",
-    "resources": "HEC Experience India Dataset - resources.csv",
+    "about": "about_me.csv",
+    "news": "news.csv",
+    "bollywood": "bollywood.csv",
+    "restaurants": "restaurants.csv",
+    "recipes": "recipes.csv",
+    "events": "events.csv",
+    "resources": "resources.csv",
 }
 
 def norm(s: str) -> str:
@@ -102,6 +108,7 @@ def map_row_to_card(row, section):
 
 def load_dataset():
     data = {}
+    # About section
     about_rows = read_csv_rows(os.path.join(CSV_DIR, FILES["about"]))
     if about_rows:
         r0 = about_rows[0]
@@ -112,6 +119,7 @@ def load_dataset():
         about_card = {"title": "About", "desc": "", "image": "", "link": "", "section": "about", "experience": "", "meta": []}
     data["about"] = about_card
 
+    # Other sections
     for sec in ["news", "bollywood", "restaurants", "recipes", "events", "resources"]:
         rows = read_csv_rows(os.path.join(CSV_DIR, FILES[sec]))
         data[sec] = [map_row_to_card(r, sec) for r in rows]
@@ -130,7 +138,7 @@ def index():
         recipes=SITE_DATA["recipes"],
         events=SITE_DATA["events"],
         resources=SITE_DATA["resources"],
-        CHUNK=6,  # still 6 per click, but each card is smaller now
+        CHUNK=6,
     )
 
 if __name__ == "__main__":

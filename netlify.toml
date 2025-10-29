@@ -1,9 +1,10 @@
 [build]
-  command = "eleventy"
+  command = "npm run build"
   publish = "_site"
 
 [build.environment]
   NODE_VERSION = "18"
 
+# Only needed if you later add Netlify Functions
 [functions]
   directory = "netlify/functions"

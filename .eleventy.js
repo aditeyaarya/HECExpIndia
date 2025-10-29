@@ -1,21 +1,17 @@
 module.exports = function (eleventyConfig) {
-  // Copy static assets as-is to the output folder
+  // Copy all static assets (images, CSS, JS, etc.)
   eleventyConfig.addPassthroughCopy({ "static": "static" });
 
-  // Copy all CSV datasets
-  eleventyConfig.addPassthroughCopy({ "HEC Experience India Dataset - news.csv": "HEC Experience India Dataset - news.csv" });
-  eleventyConfig.addPassthroughCopy({ "HEC Experience India Dataset - bollywood.csv": "HEC Experience India Dataset - bollywood.csv" });
-  eleventyConfig.addPassthroughCopy({ "HEC Experience India Dataset - restaurants.csv": "HEC Experience India Dataset - restaurants.csv" });
-  eleventyConfig.addPassthroughCopy({ "HEC Experience India Dataset - recipes.csv": "HEC Experience India Dataset - recipes.csv" });
-  eleventyConfig.addPassthroughCopy({ "HEC Experience India Dataset - events.csv": "HEC Experience India Dataset - events.csv" });
-  eleventyConfig.addPassthroughCopy({ "HEC Experience India Dataset - resources.csv": "HEC Experience India Dataset - resources.csv" });
-  eleventyConfig.addPassthroughCopy({ "HEC Experience India Dataset - about me.csv": "HEC Experience India Dataset - about me.csv" });
+  // Copy all data files (CSV, JSON, etc.) into the build output
+  // This includes: about_me.csv, bollywood.csv, events.csv, news.csv,
+  // recipes.csv, resources.csv, restaurants.csv
+  eleventyConfig.addPassthroughCopy("data");
 
   // Return Eleventy configuration
   return {
     dir: {
-      input: "templates",   // where your index.html (Jinja/Nunjucks) lives
-      output: "_site"       // Eleventy will build here
+      input: ".",       // your templates and data live in the project root
+      output: "_site"   // Eleventy builds here
     },
     markdownTemplateEngine: "njk",
     htmlTemplateEngine: "njk",
